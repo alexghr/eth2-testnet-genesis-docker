@@ -37,19 +37,11 @@ RUN apk add --no-cache \
     jq \
     && rm -rf /var/cache/apk/*
 
-# Create non-root user
-RUN addgroup -g 1000 -S eth2 && \
-    adduser -u 1000 -S eth2 -G eth2
-
 # Copy binary from builder
 COPY --from=builder /build/eth2-testnet-genesis /usr/local/bin/eth2-testnet-genesis
 
 # Create necessary directories
-RUN mkdir -p /data /configs && \
-    chown -R eth2:eth2 /data /configs
-
-# Switch to non-root user
-USER eth2
+RUN mkdir -p /data /configs
 
 # Set working directory
 WORKDIR /data
